@@ -14,4 +14,12 @@
                  alt="<?= $escaper->escapeHtmlAttr(__('Loading...')) ?>">
         </div>
     </div>
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <script type="text/x-magento-init">
+        {
+            "#my-checkout": {
+                "Magento_Ui/js/core/app": <?= /* @noEscape */ $block->getJsLayout() ?>
+            }
+        }
+    </script>
 </div>
