@@ -4,8 +4,11 @@
 
 define([
     'uiComponent',
-    'ko'
-], function(Component, ko) {
+    'ko',
+    'Barranco_Checkout/js/model/step-navigator',
+    'mage/translate',
+    'underscore'
+], function(Component, ko, stepNavigator, $t, _) {
     'use strict';
     
     return Component.extend({
@@ -16,6 +19,19 @@ define([
 
         initialize: function () {
             this._super();
+
+            stepNavigator.registerStep(
+                'payment',
+                '',
+                $t('Review & Payments'),
+                this.visible,
+                _.bind(this.navigate, this),
+                this.sortOrder
+            );
+        },
+
+        navigate: function () {
+            this.isVisible(false);
         }
     });
 });

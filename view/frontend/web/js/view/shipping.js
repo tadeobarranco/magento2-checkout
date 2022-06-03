@@ -5,7 +5,10 @@
 define([
     'ko',
     'uiComponent',
-], function(ko, Component) {
+    'Barranco_Checkout/js/model/step-navigator',
+    'mage/translate',
+    'underscore'
+], function(ko, Component, stepNavigator, $t, _) {
     'use strict';
     
     return Component.extend({
@@ -19,6 +22,22 @@ define([
          */
         initialize: function () {
             this._super();
+
+            stepNavigator.registerStep(
+                'shipping',
+                '',
+                $t('Shipping'),
+                this.visible,
+                _.bind(this.navigate, this),
+                this.sortOrder
+            );
+        },
+
+        /**
+         * @param {Object} step
+         */
+        navigate: function (step) {
+            step && step.isVisible(true);
         }
     });
 });
