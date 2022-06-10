@@ -16,6 +16,7 @@ define([
             template: 'Barranco_Checkout/payment'
         },
         isVisible: ko.observable(false),
+        isComplete: ko.observable(false),
 
         initialize: function () {
             this._super();
@@ -24,9 +25,10 @@ define([
                 'payment',
                 '',
                 $t('Review & Payments'),
-                this.visible,
+                this.isVisible,
                 _.bind(this.navigate, this),
-                this.sortOrder
+                this.sortOrder,
+                this.isComplete
             );
         },
 

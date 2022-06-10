@@ -26,6 +26,7 @@
 @my-checkout-progress-bar-item-element-inner__active__border-color: @active__color;
 @my-checkout-progress-bar-item__active__color:                      @primary__color;
 @my-checkout-progress-bar-item__active__font-weight:                @font-weight__semibold;
+@my-checkout-progress-bar-item-element-inner__active__content:      @icon-checkmark;
 
 //
 // Common
@@ -57,6 +58,17 @@
         &:extend(.abs-reset-list all);
         display: none;
     }
+
+    .form-shipping {
+        .actions-toolbar {
+            .action {
+                &.primary {
+                    &:extend(.abs-button-l all);
+                    margin: @indent__base 0 0;
+                }
+            }
+        }
+    }
 }
 
 //
@@ -79,6 +91,22 @@
 // _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+
+    .my-checkout-shipping-address {
+        .actions-toolbar {
+            > .primary {
+                float: right;
+            }
+
+            .action {
+                &.primary {
+                    &.button {
+                        margin-top: 2px;
+                    }
+                }
+            }
+        }
+    }
 
     .my-opc-wrapper {
         &:extend(.abs-add-box-sizing-desktop-m all);
@@ -192,6 +220,18 @@
 
                 &:after {
                     .lib-css(border-color, @my-checkout-progress-bar-item-element-inner__active__border-color);
+                }
+            }
+        }
+
+        &._complete {
+            cursor: pointer;
+
+            > span {
+
+                &:after {
+                    .lib-css(font-family, @icons__font-name);
+                    .lib-css(content, @my-checkout-progress-bar-item-element-inner__active__content);
                 }
             }
         }

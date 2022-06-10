@@ -18,6 +18,10 @@ define([
 
         initialize: function () {
             this._super();
+        },
+
+        navigateTo: function (step) {
+            stepNavigator.navigateTo(step);
         }
     });
 });

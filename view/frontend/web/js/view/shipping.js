@@ -7,8 +7,9 @@ define([
     'uiComponent',
     'Barranco_Checkout/js/model/step-navigator',
     'mage/translate',
-    'underscore'
-], function(ko, Component, stepNavigator, $t, _) {
+    'underscore',
+    'Barranco_Checkout/js/model/full-screen-loader'
+], function(ko, Component, stepNavigator, $t, _, fullScreenLoader) {
     'use strict';
     
     return Component.extend({
@@ -16,6 +17,7 @@ define([
             template: 'Barranco_Checkout/shipping'
         },
         visible: ko.observable(true),
+        complete: ko.observable(false),
 
         /**
          * @return this
@@ -29,7 +31,8 @@ define([
                 $t('Shipping'),
                 this.visible,
                 _.bind(this.navigate, this),
-                this.sortOrder
+                this.sortOrder,
+                this.complete
             );
         },
 
@@ -38,6 +41,12 @@ define([
          */
         navigate: function (step) {
             step && step.isVisible(true);
+        },
+
+        navigateToNextStep: function () {
+            fullScreenLoader.startLoader();
+            stepNavigator.next();
+            fullScreenLoader.stopLoader();
         }
     });
 });
