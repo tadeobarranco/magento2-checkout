@@ -1,0 +1,12 @@
+<!--
+/**
+ * Barranco\Checkout
+ */
+-->
+<ul class="my-opc-progress-bar">
+    <!-- ko foreach: { data: steps(), as: 'item' } -->
+        <li class="my-opc-progress-bar-item" data-bind="css: item.isVisible() ? '_active' : (item.isComplete() ? '_complete' : '')">
+            <span data-bind="i18n: item.title, click: $parent.navigateTo"></span>
+        </li>
+    <!-- /ko -->
+</ul>

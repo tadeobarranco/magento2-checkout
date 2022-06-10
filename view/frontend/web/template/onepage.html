@@ -1,0 +1,17 @@
+<!--
+/**
+ * Barranco\Checkout
+ */
+-->
+
+<!-- ko foreach: getRegion('my-progress-bar') -->
+<!-- ko template: getTemplate() --><!-- /ko -->
+<!--/ko-->
+
+<div class="my-opc-wrapper">
+    <ol class="my-opc" id="myCheckoutSteps">
+        <!-- ko foreach: getRegion('my-steps') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+    </ol>
+</div>

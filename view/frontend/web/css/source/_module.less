@@ -1,4 +1,34 @@
 //
+// Variables
+// _____________________________________________
+
+@my-checkout-wrapper__margin:                                       @indent__base;
+@my-checkout-wrapper__columns:                                      16;
+@my-checkout-step-title__border:                                    @border-width__base solid @color-gray80;
+@my-checkout-step-title-mobile__font-size:                          18px;
+@my-checkout-progress-bar__font-size:                               18px;
+@my-checkout-progress-bar__font-weight:                             @font-weight__light;
+@my-checkout-progress-bar-item__color:                              @color-gray40;
+@my-checkout-progress-bar-item__margin:                             @indent__s;
+@my-checkout-progress-bar-item__width:                              185px;
+@my-checkout-progress-bar-item__background-color:                   @color-gray-middle1;
+@my-checkout-progress-bar-item-element-inner__border-color:         @color-gray80;
+@my-checkout-progress-bar-item-element__width:                      38px;
+@my-checkout-progress-bar-item__transition:                         background .3s;
+@my-checkout-progress-bar-item__border-radius:                      6px;
+@my-checkout-progress-bar-item-element__height:                     @my-checkout-progress-bar-item-element__width;
+@my-checkout-progress-bar-item-element-inner__background-color:     @page__background-color;
+@my-checkout-progress-bar-item-element-inner__height:               @my-checkout-progress-bar-item-element-inner__width;
+@my-checkout-progress-bar-item-element-inner__width:                @my-checkout-progress-bar-item-element__width - ( @my-checkout-progress-bar-item-element-outer-radius__width*2 );
+@my-checkout-progress-bar-item-element-outer-radius__width:         6px;
+@my-checkout-progress-bar-item-element-inner__color:                @primary__color;
+@my-checkout-progress-bar-item__active__background-color:           @active__color;
+@my-checkout-progress-bar-item-element-inner__active__border-color: @active__color;
+@my-checkout-progress-bar-item__active__color:                      @primary__color;
+@my-checkout-progress-bar-item__active__font-weight:                @font-weight__semibold;
+@my-checkout-progress-bar-item-element-inner__active__content:      @icon-checkmark;
+
+//
 // Common
 // _____________________________________________
 
@@ -7,6 +37,203 @@
     .mycheckout-index-index {
         .page-title-wrapper {
             &:extend(.abs-visually-hidden all);
+        }
+    }
+
+    .my-opc-wrapper {
+        .lib-css(margin, 0 0 @my-checkout-wrapper__margin);
+
+        .my-opc {
+            &:extend(.abs-reset-list all);
+        }
+
+        .step-title {
+            &:extend(.abs-checkout-title all);
+            .lib-css(border-bottom, @my-checkout-step-title__border);
+            margin-bottom: 15px;
+        }
+    }
+
+    .my-opc-progress-bar {
+        &:extend(.abs-reset-list all);
+        display: none;
+    }
+
+    .form-shipping {
+        .actions-toolbar {
+            .action {
+                &.primary {
+                    &:extend(.abs-button-l all);
+                    margin: @indent__base 0 0;
+                }
+            }
+        }
+    }
+}
+
+//
+// Mobile
+// _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+
+    .my-opc-wrapper {
+        .step-title {
+            .lib-css(font-size, @my-checkout-step-title-mobile__font-size);
+            border-bottom: 0;
+            padding-bottom: 0;
+        }
+    }
+}
+
+//
+// Desktop
+// _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+
+    .my-checkout-shipping-address {
+        .actions-toolbar {
+            > .primary {
+                float: right;
+            }
+
+            .action {
+                &.primary {
+                    &.button {
+                        margin-top: 2px;
+                    }
+                }
+            }
+        }
+    }
+
+    .my-opc-wrapper {
+        &:extend(.abs-add-box-sizing-desktop-m all);
+        .lib-layout-column(2, 1, @my-checkout-wrapper__columns);
+        padding-right: @indent__l;
+    }
+
+    .my-opc-progress-bar {
+        .lib-css(margin, 0 0 @checkout-progress-bar__margin);
+        counter-reset: i;
+        display: block;
+        font-size: 0;
+    }
+
+    .my-opc-progress-bar-item {
+        .lib-css(margin, 0 0 @my-checkout-progress-bar-item__margin);
+        .lib-css(width, @my-checkout-progress-bar-item__width);
+        display: inline-block;
+        position: relative;
+        text-align: center;
+        vertical-align: top;
+
+        &:before {
+            .lib-css(background, @my-checkout-progress-bar-item__background-color);
+            .lib-css(border, 1px solid @my-checkout-progress-bar-item-element-inner__border-color);
+            .lib-css(top, @my-checkout-progress-bar-item-element__width/2);
+            .lib-css(transition, @my-checkout-progress-bar-item__transition);
+            content: '';
+            height: 7px;
+            left: 0;
+            position: absolute;
+            width: 100%;
+        }
+
+        &:first-child {
+            &:before {
+                .lib-css(border-radius, @my-checkout-progress-bar-item__border-radius 0 0 @my-checkout-progress-bar-item__border-radius);
+            }
+        }
+
+        &:last-child {
+            &:before {
+                .lib-css(border-radius, 0 @my-checkout-progress-bar-item__border-radius @my-checkout-progress-bar-item__border-radius 0);
+            }
+        }
+
+        > span {
+            display: inline-block;
+            padding-top: 45px;
+            width: 100%;
+            word-wrap: break-word;
+
+            .lib-typography(
+                @_font-size: @my-checkout-progress-bar__font-size,
+                @_color: @my-checkout-progress-bar-item__color,
+                @_font-family: false,
+                @_font-weight: @my-checkout-progress-bar__font-weight,
+                @_line-height: false,
+                @_font-style: false
+            );
+
+            &:before,
+            &:after {
+                .lib-css(background, @my-checkout-progress-bar-item__background-color);
+                .lib-css(border, 1px solid @my-checkout-progress-bar-item-element-inner__border-color);
+                .lib-css(height, @my-checkout-progress-bar-item-element__height);
+                .lib-css(margin-left, -(@my-checkout-progress-bar-item-element__width/2));
+                .lib-css(transition, @my-checkout-progress-bar-item__transition);
+                .lib-css(width, @my-checkout-progress-bar-item-element__width);
+                border-radius: 50%;
+                content: '';
+                left: 50%;
+                position: absolute;
+                top: 0;
+            }
+
+            &:after {
+                .lib-css(background, @my-checkout-progress-bar-item-element-inner__background-color);
+                .lib-css(height, @my-checkout-progress-bar-item-element-inner__height);
+                .lib-css(margin-left, -(@my-checkout-progress-bar-item-element-inner__width/2));
+                .lib-css(top, @my-checkout-progress-bar-item-element-outer-radius__width);
+                .lib-css(width, @my-checkout-progress-bar-item-element-inner__width);
+                content: counter(i);
+                counter-increment: i;
+
+                .lib-typography(
+                    @_font-size: @my-checkout-progress-bar__font-size,
+                    @_color: @my-checkout-progress-bar-item-element-inner__color,
+                    @_font-family: false,
+                    @_font-weight: @font-weight__semibold,
+                    @_line-height: false,
+                    @_font-style: false
+                );
+            }
+        }
+
+        &._active {
+            &:before {
+                .lib-css(background, @my-checkout-progress-bar-item__active__background-color);
+                .lib-css(border-color, @my-checkout-progress-bar-item-element-inner__active__border-color);
+            }
+
+            > span {
+                .lib-css(color, @my-checkout-progress-bar-item__active__color);
+                .lib-css(font-weight, @my-checkout-progress-bar-item__active__font-weight);
+
+                &:before {
+                    .lib-css(background, @my-checkout-progress-bar-item__active__background-color);
+                    .lib-css(border-color, @my-checkout-progress-bar-item-element-inner__active__border-color);
+                }
+
+                &:after {
+                    .lib-css(border-color, @my-checkout-progress-bar-item-element-inner__active__border-color);
+                }
+            }
+        }
+
+        &._complete {
+            cursor: pointer;
+
+            > span {
+
+                &:after {
+                    .lib-css(font-family, @icons__font-name);
+                    .lib-css(content, @my-checkout-progress-bar-item-element-inner__active__content);
+                }
+            }
         }
     }
 }

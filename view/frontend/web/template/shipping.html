@@ -1,0 +1,21 @@
+<!--
+/**
+ * Barranco\Checkout
+ */
+-->
+<li id="myShipping" class="my-checkout-shipping-address" data-bind="fadeVisible: visible()">
+    <div class="step-title" translate="'Shipping Information'" data-role="title" />
+    <div id="checkout-step-shipping" class="step-content" data-role="content">
+        <form id="checkout-step-shipping-information"
+              class="form form-shipping"
+              data-bind="submit: navigateToNextStep">
+            <div id="shipping-method-buttons-container" class="actions-toolbar">
+                <div class="primary">
+                    <button data-role="opc-continue" type="submit" class="button action continue primary">
+                        <span translate="'Next'" />
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</li>
