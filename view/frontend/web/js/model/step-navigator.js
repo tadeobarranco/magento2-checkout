@@ -37,7 +37,7 @@ define([
         next: function () {
             var activeIndex = 0;
 
-            steps().forEach(function (element, index) {
+            steps().sort(this.sortItems).forEach(function (element, index) {
                 if (element.isVisible()) {
                     activeIndex = index;
                 }
@@ -61,13 +61,23 @@ define([
                 return;
             }
 
-            steps().forEach(function (element) {
+            steps().sort(this.sortItems).forEach(function (element) {
                 if (element.code === step.code) {
                     element.isVisible(true);
                 } else {
                     element.isVisible(false);
                 }
             });
+        },
+
+        /**
+         * Control how steps should be sorted
+         *
+         * @param {Object} left
+         * @param {Object} right
+         */
+        sortItems: function (left, right) {
+            return left.sortOrder > right.sortOrder ? 1 : -1;
         }
     }
 });
