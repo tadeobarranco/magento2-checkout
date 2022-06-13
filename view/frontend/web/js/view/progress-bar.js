@@ -16,12 +16,28 @@ define([
         },
         steps: steps,
 
+        /** @inheritdoc */
         initialize: function () {
             this._super();
         },
 
+        /**
+         * Control step visibility
+         *
+         * @param {Object} step
+         */
         navigateTo: function (step) {
             stepNavigator.navigateTo(step);
+        },
+
+        /**
+         * Control how steps should be sorted
+         *
+         * @param {Object} left
+         * @param {Object} right
+         */
+        sortItems: function (left, right) {
+            return stepNavigator.sortItems(left, right);
         }
     });
 });
