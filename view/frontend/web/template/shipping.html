@@ -4,8 +4,11 @@
  */
 -->
 <li id="myShipping" class="my-checkout-shipping-address" data-bind="fadeVisible: visible()">
-    <div class="step-title" translate="'Shipping Information'" data-role="title" />
+    <div class="step-title" translate="'Shipping Address'" data-role="title" />
     <div id="checkout-step-shipping" class="step-content" data-role="content">
+
+        <each args="getRegion('my-customer-email')" render="" />
+
         <form id="checkout-step-shipping-information"
               class="form form-shipping"
               data-bind="submit: navigateToNextStep">

@@ -1,0 +1,20 @@
+<!--
+/**
+ * Barranco\Checkout
+ */
+-->
+
+<!-- ko ifnot: isCustomerLoggedIn() -->
+<form class="form">
+    <fieldset>
+        <div>
+            <label for="customer-email"><span data-bind="i18n: 'Email Address'"></span></label>
+            <div>
+                <input type="email" id="customer-email">
+                <!-- ko template: 'ui/form/element/helper/tooltip' --><!-- /ko -->
+                <span data-bind="fadeVisible: isPasswordVisible() == false"><!-- ko i18n: 'You can create an account after checkout.' --><!-- /ko --></span>
+            </div>
+        </div>
+    </fieldset>
+</form>
+<!-- /ko -->
