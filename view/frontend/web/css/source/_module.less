@@ -27,6 +27,9 @@
 @my-checkout-progress-bar-item__active__color:                      @primary__color;
 @my-checkout-progress-bar-item__active__font-weight:                @font-weight__semibold;
 @my-checkout-progress-bar-item-element-inner__active__content:      @icon-checkmark;
+@my-checkout-shipping-address__margin:                              28px;
+@my-checkout-shipping-address__max-width:                           500px;
+
 
 //
 // Common
@@ -51,6 +54,23 @@
             &:extend(.abs-checkout-title all);
             .lib-css(border-bottom, @my-checkout-step-title__border);
             margin-bottom: 15px;
+        }
+
+        .form-login {
+            .lib-css(margin, @my-checkout-shipping-address__margin 0 @my-checkout-shipping-address__margin 0);
+
+            .fieldset {
+                .field {
+                    .label {
+                        font-weight: @font-weight__regular;
+                    }
+                }
+
+                .note {
+                    font-size: @font-size__base;
+                    margin-top: @indent__s;
+                }
+            }
         }
     }
 
@@ -112,6 +132,12 @@
         &:extend(.abs-add-box-sizing-desktop-m all);
         .lib-layout-column(2, 1, @my-checkout-wrapper__columns);
         padding-right: @indent__l;
+
+        .form-login {
+            .lib-css(max-width, @my-checkout-shipping-address__max-width);
+            .lib-css(border-bottom, @my-checkout-step-title__border);
+            padding-bottom: @indent__base;
+        }
     }
 
     .my-opc-progress-bar {

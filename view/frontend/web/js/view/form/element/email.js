@@ -3,15 +3,16 @@
  */
 
 define([
+    'ko',
     'uiComponent',
     'Magento_Customer/js/model/customer'
-], function(Component, customer) {
+], function(ko, Component, customer) {
     'use strict';
     
     return Component.extend({
         defaults: {
             template: 'Barranco_Checkout/form/element/email',
-            isPasswordVisible: false
+            isPasswordVisible: ko.observable(false)
         },
 
         isCustomerLoggedIn: customer.isLoggedIn,

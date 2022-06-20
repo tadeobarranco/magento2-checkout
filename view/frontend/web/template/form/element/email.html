@@ -5,14 +5,14 @@
 -->
 
 <!-- ko ifnot: isCustomerLoggedIn() -->
-<form class="form">
-    <fieldset>
-        <div>
-            <label for="customer-email"><span data-bind="i18n: 'Email Address'"></span></label>
-            <div>
-                <input type="email" id="customer-email">
+<form class="form form-login">
+    <fieldset class="fieldset">
+        <div class="field required">
+            <label class="label" for="my-customer-email"><span data-bind="i18n: 'Email Address'"></span></label>
+            <div class="control _with-tooltip">
+                <input type="email" id="my-customer-email">
                 <!-- ko template: 'ui/form/element/helper/tooltip' --><!-- /ko -->
-                <span data-bind="fadeVisible: isPasswordVisible() == false"><!-- ko i18n: 'You can create an account after checkout.' --><!-- /ko --></span>
+                <span class="note" data-bind="fadeVisible: isPasswordVisible() == false"><!-- ko i18n: 'You can create an account after checkout.' --><!-- /ko --></span>
             </div>
         </div>
     </fieldset>
