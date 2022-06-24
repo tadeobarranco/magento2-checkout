@@ -5,12 +5,19 @@
 -->
 
 <!-- ko ifnot: isCustomerLoggedIn() -->
-<form class="form form-login">
+<form class="form form-login" data-role="my-customer-email-form">
     <fieldset class="fieldset">
         <div class="field required">
             <label class="label" for="my-customer-email"><span data-bind="i18n: 'Email Address'"></span></label>
             <div class="control _with-tooltip">
-                <input type="email" id="my-customer-email">
+                <input type="text"
+                       class="input-text"
+                       id="my-customer-email"
+                       data-bind="
+                            textInput: myEmail,
+                            hasFocus: myEmailFocused"
+                       data-validate="{required: true, 'validate-email': true}"
+                       name="my-customer-email" />
                 <!-- ko template: 'ui/form/element/helper/tooltip' --><!-- /ko -->
                 <span class="note" data-bind="fadeVisible: isPasswordVisible() == false"><!-- ko i18n: 'You can create an account after checkout.' --><!-- /ko --></span>
             </div>

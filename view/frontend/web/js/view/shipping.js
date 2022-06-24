@@ -3,13 +3,15 @@
  */
 
 define([
+    'jquery',
     'ko',
-    'uiComponent',
+    'Magento_Ui/js/form/form',
     'Barranco_Checkout/js/model/step-navigator',
     'mage/translate',
     'underscore',
-    'Barranco_Checkout/js/model/full-screen-loader'
-], function(ko, Component, stepNavigator, $t, _, fullScreenLoader) {
+    'Barranco_Checkout/js/model/full-screen-loader',
+    'Magento_Customer/js/model/customer'
+], function($, ko, Component, stepNavigator, $t, _, fullScreenLoader, customer) {
     'use strict';
     
     return Component.extend({
@@ -43,10 +45,39 @@ define([
             step && step.isVisible(true);
         },
 
+        /**
+         * Move foward to the next step
+         */
         navigateToNextStep: function () {
-            fullScreenLoader.startLoader();
-            stepNavigator.next();
-            fullScreenLoader.stopLoader();
+            if (this.validateEmail()) {
+                fullScreenLoader.startLoader();
+                stepNavigator.next();
+                fullScreenLoader.stopLoader();
+            }
+        },
+
+        /**
+         * Validate customer email
+         *
+         * @return {Boolean}
+         */
+        validateEmail: function () {
+            var loginFormSelector = 'form[data-role="my-customer-email-form"]',
+                loginForm = $(loginFormSelector),
+                myCustomerEmail = loginFormSelector + ' input[name="my-customer-email"]',
+                valid;
+
+            if (!customer.isLoggedIn()) {
+                loginForm.validation();
+                valid = !!$(myCustomerEmail).valid();
+            }
+
+            if (!valid) {
+                $(myCustomerEmail).focus();
+                return false;
+            }
+
+            return true;
         }
     });
 });
