@@ -6,11 +6,11 @@
 
 <!-- ko ifnot: isCustomerLoggedIn() -->
 <form class="form form-login" data-role="my-customer-email-form">
-    <fieldset class="fieldset">
+    <fieldset class="fieldset" data-bind="blockLoader: isLoading">
         <div class="field required">
             <label class="label" for="my-customer-email"><span data-bind="i18n: 'Email Address'"></span></label>
             <div class="control _with-tooltip">
-                <input type="text"
+                <input type="email"
                        class="input-text"
                        id="my-customer-email"
                        data-bind="
@@ -22,6 +22,38 @@
                 <span class="note" data-bind="fadeVisible: isPasswordVisible() == false"><!-- ko i18n: 'You can create an account after checkout.' --><!-- /ko --></span>
             </div>
         </div>
+
+        <!-- Hidden fields -->
+        <fieldset class="fieldset" data-bind="fadeVisible: isPasswordVisible()">
+            <div class="field required">
+                <label class="label" for="my-customer-password"><span data-bind="i18n: 'Password'"></span></label>
+                <div class="control">
+                    <input type="password"
+                           class="input-text"
+                           name="my-customer-password"
+                           id="my-customer-password"
+                           data-bind="
+                                attr: {
+                                    placeholder: $t('Password')
+                                }"
+                           data-validate="{required: true"
+                           autocomplete="off" />
+                    <span class="note" data-bind="i18n: 'You already have an account with us. Sign in or continue as guest.'"></span>
+                </div>
+            </div>
+            <div class="actions-toolbar">
+                <input type="hidden" name="context" value="checkout" />
+                <div class="primary">
+                    <button type="submit" class="action login primary"><span data-bind="i18n: 'Login'"></span></button>
+                </div>
+                <div class="secondary">
+                    <a href="#" class="action remind">
+                        <span data-bind="i18n: 'Forgot Your Password?'"></span>
+                    </a>
+                </div>
+            </div>
+        </fieldset>
+        <!-- Hidden fields -->
     </fieldset>
 </form>
 <!-- /ko -->
