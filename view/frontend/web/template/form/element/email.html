@@ -3,9 +3,11 @@
  * Barranco\Checkout
  */
 -->
-
 <!-- ko ifnot: isCustomerLoggedIn() -->
-<form class="form form-login" data-role="my-customer-email-form">
+<form class="form form-login"
+      data-role="my-customer-email-form"
+      data-bind="submit: login"
+      method="post">
     <fieldset class="fieldset" data-bind="blockLoader: isLoading">
         <div class="field required">
             <label class="label" for="my-customer-email"><span data-bind="i18n: 'Email Address'"></span></label>
@@ -36,7 +38,7 @@
                                 attr: {
                                     placeholder: $t('Password')
                                 }"
-                           data-validate="{required: true"
+                           data-validate="{required: true}"
                            autocomplete="off" />
                     <span class="note" data-bind="i18n: 'You already have an account with us. Sign in or continue as guest.'"></span>
                 </div>

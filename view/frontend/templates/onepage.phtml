@@ -26,6 +26,8 @@
     $serializedCheckoutConfig = /* @noEscape */ $block->getSerializedCheckoutConfig();
     $scriptString = <<<script
         window.checkoutConfig = {$serializedCheckoutConfig};
+        window.isCustomerLoggedIn = window.checkoutConfig.isCustomerLoggedIn;
+        window.customerData = window.checkoutConfig.customerData;
     script;
     ?>
     <?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>

@@ -65,7 +65,7 @@ define([
             var loginFormSelector = 'form[data-role="my-customer-email-form"]',
                 loginForm = $(loginFormSelector),
                 myCustomerEmail = loginFormSelector + ' input[name="my-customer-email"]',
-                valid;
+                valid = customer.isLoggedIn();
 
             if (!customer.isLoggedIn()) {
                 loginForm.validation();

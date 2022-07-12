@@ -6,10 +6,12 @@ define([
     'jquery',
     'ko',
     'uiComponent',
-    'Magento_Customer/js/model/customer',
+    'Barranco_Checkout/js/model/full-screen-loader',
     'Magento_Customer/js/action/check-email-availability',
+    'Magento_Customer/js/action/login',
+    'Magento_Customer/js/model/customer',
     'mage/validation'
-], function($, ko, Component, customer, checkEmailAvailabilityAction) {
+], function($, ko, Component, fullScreenLoader, checkEmailAvailabilityAction, loginAction, customer) {
     'use strict';
     
     return Component.extend({
@@ -69,6 +71,9 @@ define([
             return true;
         },
 
+        /**
+         * Callback for 'myEmail' on change
+         */
         emailHasChanged: function () {
             var self = this;
 
@@ -84,6 +89,9 @@ define([
 
         },
 
+        /**
+         * Check if customer email exists
+         */
         checkEmailAvailability: function () {
 
             this.isMyCustomerEmailComplete = $.Deferred();
@@ -98,6 +106,34 @@ define([
                 this.isLoading(false);
             }.bind(this));
 
+        },
+
+        /**
+         * Log in action
+         *
+         * @param {HTMLElement} loginForm
+         */
+        login: function (loginForm) {
+            var loginData = {},
+                formLoginData = $(loginForm).serializeArray(),
+                mapFormData = {
+                    "my-customer-email": "username",
+                    "my-customer-password": "password",
+                    "context": "context"
+                };
+
+            formLoginData.forEach(function (input) {
+                loginData[mapFormData[input.name]] = input.value;
+            });
+
+            $(loginForm).validation();
+
+            if (this.isPasswordVisible() && $(loginForm).validation('isValid')) {
+                fullScreenLoader.startLoader();
+                loginAction(loginData).always(function () {
+                    fullScreenLoader.stopLoader();
+                });
+            }
         }
     });
 });
