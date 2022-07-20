@@ -20,22 +20,36 @@ class Onepage extends Template
     private $configProvider;
 
     /**
+     * @var array
+     */
+    private $layoutProcessors;
+
+    /**
+     * @var array
+     */
+    protected $jsLayout;
+
+    /**
      * Class constructor
      *
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Barranco\Checkout\Model\CompositeConfigProvider $configProvider
      * @param \Magento\Framewor\Serialize\Serializer\Json $serializer
+     * @param array $layoutProcessors
      * @param array $data
      */
     public function __construct(
         Context $context,
         CompositeConfigProvider $configProvider,
         Json $serializer,
+        $layoutProcessors = [],
         $data = []
     ) {
         parent::__construct($context, $data);
         $this->configProvider = $configProvider;
         $this->serializer = $serializer;
+        $this->layoutProcessors = $layoutProcessors;
+        $this->jsLayout = isset($data['jsLayout']) && is_array($data['jsLayout']) ? $data['jsLayout'] : [];
     }
 
     /**
@@ -56,5 +70,17 @@ class Onepage extends Template
     public function getCheckoutConfig()
     {
         return $this->configProvider->getConfig();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getJsLayout()
+    {
+        foreach ($this->layoutProcessors as $processor) {
+            $this->jsLayout = $processor->process($this->jsLayout);
+        }
+
+        return $this->serializer->serialize($this->jsLayout);
     }
 }

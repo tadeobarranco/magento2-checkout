@@ -5,21 +5,24 @@
 define([
     'jquery',
     'ko',
-    'Magento_Ui/js/form/form',
-    'Barranco_Checkout/js/model/step-navigator',
-    'mage/translate',
     'underscore',
     'Barranco_Checkout/js/model/full-screen-loader',
-    'Magento_Customer/js/model/customer'
-], function($, ko, Component, stepNavigator, $t, _, fullScreenLoader, customer) {
+    'Barranco_Checkout/js/model/step-navigator',
+    'Magento_Customer/js/model/address-list',
+    'Magento_Customer/js/model/customer',
+    'Magento_Ui/js/form/form',
+    'mage/translate'
+], function ($, ko, _, fullScreenLoader, stepNavigator, addressList, customer, Component, $t) {
     'use strict';
     
     return Component.extend({
         defaults: {
-            template: 'Barranco_Checkout/shipping'
+            template: 'Barranco_Checkout/shipping',
+            myShippingAddressFormTemplate: 'Barranco_Checkout/shipping-address/form'
         },
         visible: ko.observable(true),
         complete: ko.observable(false),
+        isFormInline: addressList().length === 0,
 
         /**
          * @return this

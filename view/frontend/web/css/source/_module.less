@@ -56,7 +56,8 @@
             margin-bottom: 15px;
         }
 
-        .form-login {
+        .form-login,
+        .form-shipping-address {
             .lib-css(margin, @my-checkout-shipping-address__margin 0 @my-checkout-shipping-address__margin 0);
 
             .fieldset {
@@ -133,8 +134,12 @@
         .lib-layout-column(2, 1, @my-checkout-wrapper__columns);
         padding-right: @indent__l;
 
-        .form-login {
+        .form-login,
+        .form-shipping-address {
             .lib-css(max-width, @my-checkout-shipping-address__max-width);
+        }
+
+        .form-login {
             .lib-css(border-bottom, @my-checkout-step-title__border);
             padding-bottom: @indent__base;
         }
