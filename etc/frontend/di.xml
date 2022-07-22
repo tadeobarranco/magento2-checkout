@@ -16,6 +16,7 @@
         <arguments>
             <argument name="layoutProcessors" xsi:type="array">
                 <item name="addressFormAttributes" xsi:type="object">Barranco\Checkout\Block\MyCheckout\LayoutProcessor</item>
+                <item name="directoryData" xsi:type="object">Barranco\Checkout\Block\MyCheckout\DirectoryDataProcessor</item>
             </argument>
         </arguments>
     </type>
