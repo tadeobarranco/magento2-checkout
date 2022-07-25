@@ -6,7 +6,8 @@
 namespace Barranco\Checkout\Block\MyCheckout;
 
 use Magento\Checkout\Block\Checkout\LayoutProcessorInterface;
-use Magento\Directory\Model\ResourceModel\Country\CollectionFactory;
+use Magento\Directory\Model\ResourceModel\Country\CollectionFactory as CountryCollectionFactory;
+use Magento\Directory\Model\ResourceModel\Region\CollectionFactory as RegionCollectionFactory;
 use Magento\Store\Model\StoreManagerInterface;
 
 class DirectoryDataProcessor implements LayoutProcessorInterface
@@ -17,7 +18,7 @@ class DirectoryDataProcessor implements LayoutProcessorInterface
     private $countryOptions;
 
     /**
-     * @var \Magento\Directory\Model\ResourceModel\Region\CollectionFactory
+     * @var \Magento\Directory\Model\ResourceModel\Country\CollectionFactory
      */
     private $countryCollectionFactory;
 
@@ -27,13 +28,25 @@ class DirectoryDataProcessor implements LayoutProcessorInterface
     private $storeManager;
 
     /**
+     * @var array
+     */
+    private $regionOptions;
+
+    /**
+     * @var \Magento\Directory\Model\ResourceModel\Region\CollectionFactory
+     */
+    private $regionCollectionFactory;
+
+    /**
      * Class constructor
      */
     public function __construct(
-        CollectionFactory $countryCollectionFactory,
+        CountryCollectionFactory $countryCollectionFactory,
+        RegionCollectionFactory $regionCollectionFactory,
         StoreManagerInterface $storeManager
     ) {
         $this->countryCollectionFactory = $countryCollectionFactory;
+        $this->regionCollectionFactory = $regionCollectionFactory;
         $this->storeManager = $storeManager;
     }
 
@@ -44,7 +57,8 @@ class DirectoryDataProcessor implements LayoutProcessorInterface
     {
         if (!isset($jsLayout['components']['checkoutProvider']['dictionaries'])) {
             $jsLayout['components']['checkoutProvider']['dictionaries'] = [
-                'country_id' => $this->getCountryOptions()
+                'country_id' => $this->getCountryOptions(),
+                'region_id' => $this->getRegionOptions()
             ];
         }
 
@@ -65,5 +79,21 @@ class DirectoryDataProcessor implements LayoutProcessorInterface
         }
 
         return $this->countryOptions;
+    }
+
+    /**
+     * Retrieve region collection
+     *
+     * @return array
+     */
+    private function getRegionOptions()
+    {
+        if (!isset($this->regionOptions)) {
+            $this->regionOptions = $this->regionCollectionFactory->create()->addAllowedCountriesFilter(
+                $this->storeManager->getStore()->getId()
+            )->toOptionArray();
+        }
+
+        return $this->regionOptions;
     }
 }
