@@ -52,7 +52,7 @@ define([
          * Move foward to the next step
          */
         navigateToNextStep: function () {
-            if (this.validateEmail()) {
+            if (this.validateShippingInformation()) {
                 fullScreenLoader.startLoader();
                 stepNavigator.next();
                 fullScreenLoader.stopLoader();
@@ -64,7 +64,7 @@ define([
          *
          * @return {Boolean}
          */
-        validateEmail: function () {
+        validateShippingInformation: function () {
             var loginFormSelector = 'form[data-role="my-customer-email-form"]',
                 loginForm = $(loginFormSelector),
                 myCustomerEmail = loginFormSelector + ' input[name="my-customer-email"]',
@@ -78,6 +78,16 @@ define([
             if (!valid) {
                 $(myCustomerEmail).focus();
                 return false;
+            }
+
+            if (this.isFormInline) {
+                this.source.set('params.invalid', false);
+                this.source.trigger('shippingAddress.data.validate');
+
+                if (this.source.get('params.invalid')) {
+                    this.focusInvalid();
+                    return false;
+                }
             }
 
             return true;
