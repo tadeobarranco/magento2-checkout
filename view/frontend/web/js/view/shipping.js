@@ -5,14 +5,28 @@
 define([
     'jquery',
     'ko',
+    'uiRegistry',
     'underscore',
     'Barranco_Checkout/js/model/full-screen-loader',
+    'Barranco_Checkout/js/model/postcode-validator',
     'Barranco_Checkout/js/model/step-navigator',
     'Magento_Customer/js/model/address-list',
     'Magento_Customer/js/model/customer',
     'Magento_Ui/js/form/form',
     'mage/translate'
-], function ($, ko, _, fullScreenLoader, stepNavigator, addressList, customer, Component, $t) {
+], function (
+    $,
+    ko,
+    registry,
+    _,
+    fullScreenLoader,
+    postcodeValidator,
+    stepNavigator,
+    addressList,
+    customer,
+    Component,
+    $t
+) {
     'use strict';
     
     return Component.extend({
@@ -23,11 +37,16 @@ define([
         visible: ko.observable(true),
         complete: ko.observable(false),
         isFormInline: addressList().length === 0,
+        checkTimeOut: 0,
 
         /**
          * @return this
          */
         initialize: function () {
+            var self = this,
+                shippingAddressFieldset = 'my-checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset',
+                postcodeElement = 'postcode';
+
             this._super();
 
             stepNavigator.registerStep(
@@ -39,6 +58,15 @@ define([
                 this.sortOrder,
                 this.complete
             );
+
+            registry.async(shippingAddressFieldset + '.' + postcodeElement)(function (element) {
+                element.on('value', function () {
+                    clearTimeout(self.checkTimeOut);
+                    self.checkTimeOut = setTimeout(function () {
+                        self.validatePostCode(element);
+                    }, 2000);
+                });
+            });
         },
 
         /**
@@ -91,6 +119,38 @@ define([
             }
 
             return true;
+        },
+
+        /**
+         * Postcode validation
+         *
+         * @return {*}
+         */
+        validatePostCode: function (element) {
+            var country_id = $('select[name="country_id"]:visible').val(),
+                validationResult,
+                warnMessage;
+
+            if (element == null || element.value() == null) {
+                return true;
+            }
+
+            element.warn(null);
+            validationResult = postcodeValidator.validate(element.value(), country_id);
+
+            if (!validationResult) {
+                warnMessage = $t('Provided Zip/Postal Code seems to be invalid.');
+
+                if (postcodeValidator.validatedPostCodeExample.length) {
+                    warnMessage += $t(' Example: ') + postcodeValidator.validatedPostCodeExample.join('; ') + '. ';
+                }
+
+                warnMessage += $t('If you believe it is the right one you can ignore this notice.');
+
+                element.warn(warnMessage);
+            }
+
+            return validationResult;
         }
     });
 });

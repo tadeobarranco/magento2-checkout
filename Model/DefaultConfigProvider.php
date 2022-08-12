@@ -10,6 +10,7 @@ use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Model\Address\CustomerAddressDataProvider;
 use Magento\Customer\Model\Context as CustomerContext;
 use Magento\Customer\Model\Session as CustomerSession;
+use Magento\Directory\Model\Country\Postcode\ConfigInterface;
 use Magento\Framework\App\Http\Context as HttpContext;
 
 class DefaultConfigProvider implements ConfigProviderInterface
@@ -40,22 +41,34 @@ class DefaultConfigProvider implements ConfigProviderInterface
     private $customerAddressData;
 
     /**
+     * @var \Magento\Directory\Model\Country\Postcode\ConfigInterface
+     */
+    private $postcodeConfig;
+
+    /**
      * Class constructor
      *
      * @param \Magento\Checkout\Model\Session $checkoutSession
+     * @param \Magento\Framework\App\Http\Context $httpContext
+     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
+     * @param \Magento\Customer\Model\Session $customerSession
+     * @param \Magento\Customer\Model\Address\CustomerAddressDataProvider
+     * @param \Magento\Directory\Model\Country\Postcode\ConfigInterface
      */
     public function __construct(
         Session $checkoutSession,
         HttpContext $httpContext,
         CustomerRepositoryInterface $customerRepository,
         CustomerSession $customerSession,
-        CustomerAddressDataProvider $customerAddressData
+        CustomerAddressDataProvider $customerAddressData,
+        ConfigInterface $postcodeConfig
     ) {
         $this->checkoutSession = $checkoutSession;
         $this->httpContext = $httpContext;
         $this->customerRepository = $customerRepository;
         $this->customerSession = $customerSession;
         $this->customerAddressData = $customerAddressData;
+        $this->postcodeConfig = $postcodeConfig;
     }
 
     /**
@@ -68,7 +81,8 @@ class DefaultConfigProvider implements ConfigProviderInterface
         return [
             'storeCode' => $this->getStoreCode(),
             'isCustomerLoggedIn' => $this->isCustomerLoggedIn(),
-            'customerData' => $this->getCustomerData()
+            'customerData' => $this->getCustomerData(),
+            'postCodes' => $this->postcodeConfig->getPostCodes()
         ];
     }
 
