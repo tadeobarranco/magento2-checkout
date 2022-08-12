@@ -37,6 +37,7 @@
                                                 <item name="children" xsi:type="array">
                                                     <item name="shippingAddress" xsi:type="array">
                                                         <item name="component" xsi:type="string">Barranco_Checkout/js/view/shipping</item>
+                                                        <item name="provider" xsi:type="string">checkoutProvider</item>
                                                         <item name="sortOrder" xsi:type="string">10</item>
                                                         <item name="children" xsi:type="array">
                                                             <item name="customer-email" xsi:type="array">
@@ -44,6 +45,42 @@
                                                                 <item name="displayArea" xsi:type="string">my-customer-email</item>
                                                                 <item name="tooltip" xsi:type="array">
                                                                     <item name="description" xsi:type="string" translate="true">We'll send your order confirmation here.</item>
+                                                                </item>
+                                                            </item>
+                                                            <item name="shipping-address-fieldset" xsi:type="array">
+                                                                <item name="component" xsi:type="string">uiComponent</item>
+                                                                <item name="displayArea" xsi:type="string">my-additional-fieldsets</item>
+                                                                <item name="children" xsi:type="array">
+                                                                    <item name="region" xsi:type="array">
+                                                                        <item name="visible" xsi:type="boolean">false</item>
+                                                                    </item>
+                                                                    <item name="region_id" xsi:type="array">
+                                                                        <item name="component" xsi:type="string">Magento_Ui/js/form/element/region</item>
+                                                                        <item name="config" xsi:type="array">
+                                                                            <item name="template" xsi:type="string">ui/form/field</item>
+                                                                            <item name="elementTmpl" xsi:type="string">ui/form/element/select</item>
+                                                                        </item>
+                                                                        <item name="filterBy" xsi:type="array">
+                                                                            <item name="target" xsi:type="string"><![CDATA[${ $.provider }:${ $.parentScope }.country_id]]></item>
+                                                                            <item name="field" xsi:type="string">country_id</item>
+                                                                        </item>
+                                                                        <item name="validation" xsi:type="array">
+                                                                            <item name="required-entry" xsi:type="boolean">true</item>
+                                                                        </item>
+                                                                    </item>
+                                                                    <item name="postcode" xsi:type="array">
+                                                                        <item name="component" xsi:type="string">Magento_Ui/js/form/element/post-code</item>
+                                                                        <item name="validation" xsi:type="array">
+                                                                            <item name="required-entry" xsi:type="boolean">true</item>
+                                                                        </item>
+                                                                    </item>
+                                                                    <item name="telephone" xsi:type="array">
+                                                                        <item name="config" xsi:type="array">
+                                                                            <item name="tooltip" xsi:type="array">
+                                                                                <item name="description" xsi:type="string" translate="true">For delivery questions.</item>
+                                                                            </item>
+                                                                        </item>
+                                                                    </item>
                                                                 </item>
                                                             </item>
                                                         </item>
@@ -63,6 +100,9 @@
                                         </item>
                                     </item>
                                 </item>
+                            </item>
+                            <item name="checkoutProvider" xsi:type="array">
+                                <item name="component" xsi:type="string">uiComponent</item>
                             </item>
                         </item>
                     </argument>

@@ -9,6 +9,8 @@
 
         <each args="getRegion('my-customer-email')" render="" />
 
+        <render if="isFormInline" args="myShippingAddressFormTemplate" />
+
         <form id="checkout-step-shipping-information"
               class="form form-shipping"
               data-bind="submit: navigateToNextStep">
