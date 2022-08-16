@@ -8,6 +8,7 @@
     <div id="checkout-step-shipping" class="step-content" data-role="content">
 
         <each args="getRegion('my-customer-email')" render="" />
+        <each args="getRegion('my-address-list')" render="" />
 
         <render if="isFormInline" args="myShippingAddressFormTemplate" />
 

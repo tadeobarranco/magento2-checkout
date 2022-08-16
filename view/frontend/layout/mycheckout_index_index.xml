@@ -47,6 +47,10 @@
                                                                     <item name="description" xsi:type="string" translate="true">We'll send your order confirmation here.</item>
                                                                 </item>
                                                             </item>
+                                                            <item name="address-list" xsi:type="array">
+                                                                <item name="component" xsi:type="string">Barranco_Checkout/js/view/shipping-address/list</item>
+                                                                <item name="displayArea" xsi:type="string">my-address-list</item>
+                                                            </item>
                                                             <item name="shipping-address-fieldset" xsi:type="array">
                                                                 <item name="component" xsi:type="string">uiComponent</item>
                                                                 <item name="displayArea" xsi:type="string">my-additional-fieldsets</item>
