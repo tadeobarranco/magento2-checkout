@@ -6,7 +6,11 @@
 <!-- ko if: (visible) -->
 <div class="field addresses">
     <div class="control">
-        <div class="shipping-address-item"></div>
+        <div class="shipping-address-item">
+            <!-- ko foreach: {data: elems, as: 'element' } -->
+            <!-- ko template: element.getTemplate() --><!-- /ko -->
+            <!-- /ko -->
+        </div>
     </div>
 </div>
 <!-- /ko -->
