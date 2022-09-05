@@ -29,6 +29,17 @@
 @my-checkout-progress-bar-item-element-inner__active__content:      @icon-checkmark;
 @my-checkout-shipping-address__margin:                              28px;
 @my-checkout-shipping-address__max-width:                           500px;
+@my-checkout-shipping-item__border:                                 2px solid transparent;
+@my-checkout-shipping-item__line-height:                            30px;
+@my-checkout-shipping-item__margin:                                 0 0 @indent__base;
+@my-checkout-shipping-item__padding:                                @indent__base (@indent__l + 5px) @indent__base @indent__base;
+@my-checkout-shipping-item__transition:                             .3s border-color;
+@my-checkout-shipping-item-mobile__width:                           100%;
+@my-checkout-shipping-item-tablet__width:                           100%/2;
+@my-checkout-shipping-item__width:                                  100%/3;
+@my-checkout-shipping-item-before__border-color:                    @color-gray80;
+@my-checkout-shipping-item-mobile__padding:                         0 0 15px;
+@my-checkout-shipping-item-mobile__margin:                          @my-checkout-shipping-item-mobile__padding;
 
 
 //
@@ -73,6 +84,25 @@
                 }
             }
         }
+
+        .shipping-address-items {
+            font-size: 0;
+        }
+
+        .shipping-address-item {
+            &:extend(.abs-add-box-sizing all);
+            .lib-css(border, @my-checkout-shipping-item__border);
+            .lib-css(line-height, @my-checkout-shipping-item__line-height);
+            .lib-css(margin, @my-checkout-shipping-item__margin);
+            .lib-css(padding, @my-checkout-shipping-item__padding);
+            .lib-css(transition, @my-checkout-shipping-item__transition);
+            .lib-css(width, @my-checkout-shipping-item-tablet__width);
+            display: inline-block;
+            font-size: @font-size__base;
+            position: relative;
+            vertical-align: top;
+            word-wrap: break-word;
+        }
     }
 
     .my-opc-progress-bar {
@@ -103,6 +133,13 @@
             .lib-css(font-size, @my-checkout-step-title-mobile__font-size);
             border-bottom: 0;
             padding-bottom: 0;
+        }
+
+        .shipping-address-item {
+            .lib-css(border-bottom, 1px solid @my-checkout-shipping-item-before__border-color);
+            .lib-css(margin, @my-checkout-shipping-item-mobile__margin);
+            .lib-css(padding, @my-checkout-shipping-item-mobile__padding);
+            .lib-css(width, @my-checkout-shipping-item-mobile__width);
         }
     }
 }
@@ -265,6 +302,15 @@
                     .lib-css(content, @my-checkout-progress-bar-item-element-inner__active__content);
                 }
             }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+
+    .my-opc-wrapper {
+        .shipping-address-item {
+            .lib-css(width, @my-checkout-shipping-item__width);
         }
     }
 }
