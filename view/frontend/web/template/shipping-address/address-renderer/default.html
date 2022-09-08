@@ -3,7 +3,7 @@
  * Barranco\Checkout
  */
 -->
-<div class="shipping-address-item">
+<div class="shipping-address-item" css="'selected-item' : isSelected() , 'not-selected-item':!isSelected()">
     <text args="address().firstname"></text> <text args="address().lastname"></text><br/>
     <text args="_.values(address().street).join(', ')"></text><br/>
     <text args="address().city"></text>, <text args="address().region"></text> <text args="address().postcode"></text><br/>

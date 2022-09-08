@@ -40,7 +40,13 @@
 @my-checkout-shipping-item-before__border-color:                    @color-gray80;
 @my-checkout-shipping-item-mobile__padding:                         0 0 15px;
 @my-checkout-shipping-item-mobile__margin:                          @my-checkout-shipping-item-mobile__padding;
-
+@my-checkout-shipping-item__active__border-color:                   @active__color;
+@my-checkout-shipping-item-mobile__active__padding:                 15px (@indent__l + 5px) 15px 18px;
+@my-checkout-shipping-item-icon__background-color:                  @my-checkout-shipping-item__active__border-color;
+@my-checkout-shipping-item-icon__color:                             @color-white;
+@my-checkout-shipping-item-icon__content:                           @icon-checkmark;
+@my-checkout-shipping-item-icon__selected__height:                  27px;
+@my-checkout-shipping-item-icon__selected__width:                   29px;
 
 //
 // Common
@@ -102,6 +108,26 @@
             position: relative;
             vertical-align: top;
             word-wrap: break-word;
+
+            &.selected-item {
+                .lib-css(border-color, @my-checkout-shipping-item__active__border-color);
+
+                &:after {
+                    .lib-css(background, @checkout-shipping-item-icon__background-color);
+                    .lib-css(color, @checkout-shipping-item-icon__color);
+                    .lib-css(content, @checkout-shipping-item-icon__content);
+                    .lib-css(font-family, @icons__font-name);
+                    .lib-css(height, @checkout-shipping-item-icon__selected__height);
+                    .lib-css(width, @checkout-shipping-item-icon__selected__width);
+                    font-size: 19px;
+                    line-height: 21px;
+                    padding-top: 2px;
+                    position: absolute;
+                    right: 0;
+                    text-align: center;
+                    top: 0;
+                }
+            }
         }
     }
 
@@ -140,6 +166,11 @@
             .lib-css(margin, @my-checkout-shipping-item-mobile__margin);
             .lib-css(padding, @my-checkout-shipping-item-mobile__padding);
             .lib-css(width, @my-checkout-shipping-item-mobile__width);
+
+            &.selected-item {
+                .lib-css(padding, @my-checkout-shipping-item-mobile__active__padding);
+                border-bottom-width: 2px;
+            }
         }
     }
 }

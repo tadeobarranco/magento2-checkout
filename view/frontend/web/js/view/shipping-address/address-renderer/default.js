@@ -3,9 +3,11 @@
  */
 
 define([
+    'ko',
     'uiComponent',
-    'Magento_Customer/js/customer-data'
-], function(Component, customerData) {
+    'Magento_Customer/js/customer-data',
+    'Magento_Checkout/js/model/quote'
+], function(ko, Component, customerData, quote) {
     'use strict';
 
     var countryData = customerData.get('directory-data');
@@ -13,6 +15,24 @@ define([
     return Component.extend({
         defaults: {
             template: 'Barranco_Checkout/shipping-address/address-renderer/default'
+        },
+
+        /** @inheritdoc */
+        initObservable: function () {
+            this._super();
+
+            this.isSelected = ko.computed(function () {
+                var isSelected = false,
+                    shippingAddress = quote.shippingAddress();
+
+                if (shippingAddress) {
+                    isSelected = shippingAddress.getKey() == this.address().getKey();
+                }
+
+                return isSelected;
+            }, this);
+
+            return this;
         },
 
         /**

@@ -7,6 +7,7 @@ define([
     'ko',
     'uiRegistry',
     'underscore',
+    'Barranco_Checkout/js/model/checkout-data-resolver',
     'Barranco_Checkout/js/model/full-screen-loader',
     'Barranco_Checkout/js/model/postcode-validator',
     'Barranco_Checkout/js/model/step-navigator',
@@ -19,6 +20,7 @@ define([
     ko,
     registry,
     _,
+    checkoutDataResolver,
     fullScreenLoader,
     postcodeValidator,
     stepNavigator,
@@ -58,6 +60,8 @@ define([
                 this.sortOrder,
                 this.complete
             );
+
+            checkoutDataResolver.resolveShippingAddress();
 
             registry.async(shippingAddressFieldset + '.' + postcodeElement)(function (element) {
                 element.on('value', function () {
