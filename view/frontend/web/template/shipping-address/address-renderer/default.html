@@ -9,4 +9,9 @@
     <text args="address().city"></text>, <text args="address().region"></text> <text args="address().postcode"></text><br/>
     <text args="getCountryName(address().countryId)"></text><br/>
     <a if="address().telephone" attr="'href': 'tel:' + address().telephone" text="address().telephone"></a><br/>
+    <!-- ko if: (!isSelected()) -->
+    <button type="button" click="selectAddress" class="action action-select-shipping-item">
+        <span translate="'Ship Here'"></span>
+    </button>
+    <!-- /ko -->
 </div>

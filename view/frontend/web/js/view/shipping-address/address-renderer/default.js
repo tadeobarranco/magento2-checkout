@@ -5,9 +5,10 @@
 define([
     'ko',
     'uiComponent',
+    'Barranco_Checkout/js/action/select-shipping-address',
     'Magento_Customer/js/customer-data',
     'Magento_Checkout/js/model/quote'
-], function(ko, Component, customerData, quote) {
+], function(ko, Component, selectShippingAddressAction, customerData, quote) {
     'use strict';
 
     var countryData = customerData.get('directory-data');
@@ -43,6 +44,13 @@ define([
          */
         getCountryName: function(countryId) {
             return countryData()[countryId] != undefined ? countryData()[countryId].name : '';
+        },
+
+        /**
+         * Select shipping address
+         */
+        selectAddress: function() {
+            selectShippingAddressAction(this.address());
         }
     });
 });
