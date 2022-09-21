@@ -14,6 +14,7 @@ define([
     'Magento_Customer/js/model/address-list',
     'Magento_Customer/js/model/customer',
     'Magento_Ui/js/form/form',
+    'Magento_Ui/js/modal/modal',
     'mage/translate'
 ], function (
     $,
@@ -27,9 +28,12 @@ define([
     addressList,
     customer,
     Component,
+    modal,
     $t
 ) {
     'use strict';
+
+    var popUp = null;
     
     return Component.extend({
         defaults: {
@@ -40,6 +44,8 @@ define([
         complete: ko.observable(false),
         isFormInline: addressList().length === 0,
         checkTimeOut: 0,
+        isFormPopUpVisible: ko.observable(false),
+        saveInAddressBook: 1,
 
         /**
          * @return this
@@ -62,6 +68,12 @@ define([
             );
 
             checkoutDataResolver.resolveShippingAddress();
+
+            this.isFormPopUpVisible.subscribe(function (value) {
+                if (value) {
+                    self.getModalContent().openModal();
+                }
+            });
 
             registry.async(shippingAddressFieldset + '.' + postcodeElement)(function (element) {
                 element.on('value', function () {
@@ -155,6 +167,68 @@ define([
             }
 
             return validationResult;
+        },
+
+        /**
+         * Show address form pop up
+         */
+        showFormPopUp: function () {
+            this.isFormPopUpVisible(true);
+        },
+
+        /**
+         * @return {*}
+         */
+        getModalContent: function () {
+            var self = this,
+                buttons;
+
+            if (!popUp) {
+                buttons = this.myPopUpForm.options.buttons;
+
+                this.myPopUpForm.options.buttons = [
+                    {
+                        text: buttons.save.text ? buttons.save.text : $t('Save Address'),
+                        class: buttons.save.class ? buttons.save.class : 'action primary action-save-address',
+                        click: self.addNewAddress.bind(self)
+                    },
+                    {
+                        text: buttons.cancel.text ? buttons.cancel.text : $t('Cancel'),
+                        class: buttons.cancel.class ? buttons.cancel.class : 'action secondary action-hide-popup',
+                        click: this.hideFormPopUp.bind(this)
+                    }
+                ];
+
+                this.myPopUpForm.options.closed = function () {
+                    self.isFormPopUpVisible(false);
+                };
+
+                popUp = modal(this.myPopUpForm.options, $(this.myPopUpForm.element));
+            }
+
+            return popUp;
+        },
+
+        /**
+         * Hide address form pop up
+         */
+        hideFormPopUp: function () {
+            this.getModalContent().closeModal();
+        },
+
+        /**
+         * Add new address to the address list component
+         */
+        addNewAddress: function () {
+            this.source.set('params.invalid', false);
+            this.source.trigger('shippingAddress.data.validate');
+
+            if (this.source.get('params.invalid')) {
+                this.focusInvalid();
+                return false;
+            }
+
+            this.getModalContent().closeModal();
         }
     });
 });

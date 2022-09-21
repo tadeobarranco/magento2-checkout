@@ -47,6 +47,7 @@
 @my-checkout-shipping-item-icon__content:                           @icon-checkmark;
 @my-checkout-shipping-item-icon__selected__height:                  27px;
 @my-checkout-shipping-item-icon__selected__width:                   29px;
+@my-checkout-modal-popup__width:                                    800px;
 
 //
 // Common
@@ -134,6 +135,17 @@
             float: right;
             margin: @indent__base 0 0;
         }
+
+        .action-show-popup {
+            margin: 0 0 @indent__base;
+
+            > span {
+                &:before {
+                    content: '+';
+                    padding-right: @indent__xs;
+                }
+            }
+        }
     }
 
     .my-opc-progress-bar {
@@ -181,6 +193,10 @@
         .action-select-shipping-item {
             float: none;
             margin-top: @indent__s;
+            width: 100%;
+        }
+
+        .action-show-popup {
             width: 100%;
         }
     }
@@ -353,6 +369,14 @@
     .my-opc-wrapper {
         .shipping-address-item {
             .lib-css(width, @my-checkout-shipping-item__width);
+        }
+    }
+
+    .mycheckout-index-index {
+        .modal-popup {
+            .modal-inner-wrap {
+                .lib-css(width, @my-checkout-modal-popup__width);
+            }
         }
     }
 }
