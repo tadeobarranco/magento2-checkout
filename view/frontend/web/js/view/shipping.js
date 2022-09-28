@@ -7,6 +7,8 @@ define([
     'ko',
     'uiRegistry',
     'underscore',
+    'Barranco_Checkout/js/action/create-shipping-address',
+    'Barranco_Checkout/js/action/select-shipping-address',
     'Barranco_Checkout/js/model/checkout-data-resolver',
     'Barranco_Checkout/js/model/full-screen-loader',
     'Barranco_Checkout/js/model/postcode-validator',
@@ -21,6 +23,8 @@ define([
     ko,
     registry,
     _,
+    createShippingAddressAction,
+    selectShippingAddressAction,
     checkoutDataResolver,
     fullScreenLoader,
     postcodeValidator,
@@ -220,6 +224,9 @@ define([
          * Add new address to the address list component
          */
         addNewAddress: function () {
+            var addressData,
+                newShippingAddress;
+
             this.source.set('params.invalid', false);
             this.source.trigger('shippingAddress.data.validate');
 
@@ -228,6 +235,11 @@ define([
                 return false;
             }
 
+            addressData = this.source.get('shippingAddress');
+            addressData['save_in_address_book'] = this.saveInAddressBook ? 1 : 0;
+
+            newShippingAddress = createShippingAddressAction(addressData);
+            selectShippingAddressAction(newShippingAddress);
             this.getModalContent().closeModal();
         }
     });

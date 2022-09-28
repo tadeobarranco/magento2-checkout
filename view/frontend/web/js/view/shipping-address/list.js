@@ -31,6 +31,16 @@ define([
 
             _.each(customerAddressList(), this.createRendererComponent, this);
 
+            customerAddressList.subscribe(function (addresses) {
+
+                var newAddress = _.find(addresses, function(address) {
+                    return address.status === 'added';
+                });
+
+                this.createRendererComponent(newAddress.value, newAddress.index);
+
+            }, this, 'arrayChange');
+
             return this;
         },
 
