@@ -9,6 +9,7 @@ define([
     'underscore',
     'Barranco_Checkout/js/action/create-shipping-address',
     'Barranco_Checkout/js/action/select-shipping-address',
+    'Barranco_Checkout/js/checkout-data',
     'Barranco_Checkout/js/model/checkout-data-resolver',
     'Barranco_Checkout/js/model/full-screen-loader',
     'Barranco_Checkout/js/model/postcode-validator',
@@ -25,6 +26,7 @@ define([
     _,
     createShippingAddressAction,
     selectShippingAddressAction,
+    checkoutData,
     checkoutDataResolver,
     fullScreenLoader,
     postcodeValidator,
@@ -240,6 +242,8 @@ define([
 
             newShippingAddress = createShippingAddressAction(addressData);
             selectShippingAddressAction(newShippingAddress);
+            checkoutData.setSelectedShippingAddress(newShippingAddress.getKey());
+            checkoutData.setNewCustomerShippingAddress($.extend(true, {}, addressData));
             this.getModalContent().closeModal();
         }
     });
