@@ -14,6 +14,7 @@ define([
     'Barranco_Checkout/js/model/full-screen-loader',
     'Barranco_Checkout/js/model/postcode-validator',
     'Barranco_Checkout/js/model/step-navigator',
+    'Magento_Checkout/js/model/quote',
     'Magento_Customer/js/model/address-list',
     'Magento_Customer/js/model/customer',
     'Magento_Ui/js/form/form',
@@ -31,6 +32,7 @@ define([
     fullScreenLoader,
     postcodeValidator,
     stepNavigator,
+    quote,
     addressList,
     customer,
     Component,
@@ -44,7 +46,10 @@ define([
     return Component.extend({
         defaults: {
             template: 'Barranco_Checkout/shipping',
-            myShippingAddressFormTemplate: 'Barranco_Checkout/shipping-address/form'
+            myShippingAddressFormTemplate: 'Barranco_Checkout/shipping-address/form',
+            imports: {
+                countryOptions: '${ $.parentName }.shippingAddress.shipping-address-fieldset.country_id:indexedOptions'
+            }
         },
         visible: ko.observable(true),
         complete: ko.observable(false),
@@ -126,7 +131,9 @@ define([
             var loginFormSelector = 'form[data-role="my-customer-email-form"]',
                 loginForm = $(loginFormSelector),
                 myCustomerEmail = loginFormSelector + ' input[name="my-customer-email"]',
-                valid = customer.isLoggedIn();
+                valid = customer.isLoggedIn(),
+                option = _.isObject(this.countryOptions) && this.countryOptions[quote.shippingAddress().countryId],
+                messageContainer = registry.get('my-checkout.errors').messageContainer;
 
             if (!customer.isLoggedIn()) {
                 loginForm.validation();
@@ -146,6 +153,16 @@ define([
                     this.focusInvalid();
                     return false;
                 }
+            } else if (customer.isLoggedIn() &&
+                       option &&
+                       option['is_region_required'] &&
+                       !quote.shippingAddress().region
+            ) {
+                messageContainer.addErrorMessage({
+                    message: $t('Error in shipping address')
+                });
+
+                return false;
             }
 
             return true;
