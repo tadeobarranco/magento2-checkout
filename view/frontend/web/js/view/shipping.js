@@ -52,6 +52,7 @@ define([
         checkTimeOut: 0,
         isFormPopUpVisible: ko.observable(false),
         saveInAddressBook: 1,
+        isNewAddressAdded: ko.observable(false),
 
         /**
          * @return this
@@ -59,7 +60,8 @@ define([
         initialize: function () {
             var self = this,
                 shippingAddressFieldset = 'my-checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset',
-                postcodeElement = 'postcode';
+                postcodeElement = 'postcode',
+                isNewAddressAdded;
 
             this._super();
 
@@ -74,6 +76,12 @@ define([
             );
 
             checkoutDataResolver.resolveShippingAddress();
+
+            isNewAddressAdded = addressList.some(function (address) {
+                return address.getType() == 'new-customer-address';
+            });
+
+            this.isNewAddressAdded(isNewAddressAdded);
 
             this.isFormPopUpVisible.subscribe(function (value) {
                 if (value) {
@@ -244,6 +252,7 @@ define([
             selectShippingAddressAction(newShippingAddress);
             checkoutData.setSelectedShippingAddress(newShippingAddress.getKey());
             checkoutData.setNewCustomerShippingAddress($.extend(true, {}, addressData));
+            this.isNewAddressAdded(true);
             this.getModalContent().closeModal();
         }
     });
