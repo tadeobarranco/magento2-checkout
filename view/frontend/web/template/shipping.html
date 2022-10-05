@@ -8,6 +8,21 @@
     <div id="checkout-step-shipping" class="step-content" data-role="content">
 
         <each args="getRegion('my-customer-email')" render="" />
+        <each args="getRegion('my-address-list')" render="" />
+
+        <if args="!isFormInline">
+            <div class="my-new-address-popup">
+                <button type="button"
+                        class="action-show-popup"
+                        click="showFormPopUp"
+                        visible="!isNewAddressAdded()">
+                    <span translate="'New Address'" />
+                </button>
+            </div>
+            <div id="my-opc-new-shipping-address"
+                 render="myShippingAddressFormTemplate"
+                 visible="isFormPopUpVisible()" />
+        </if>
 
         <render if="isFormInline" args="myShippingAddressFormTemplate" />
 
