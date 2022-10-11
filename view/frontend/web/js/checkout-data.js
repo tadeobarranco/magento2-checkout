@@ -15,7 +15,8 @@ define([
     initData = function () {
         return {
             'newCustomerShippingAddress': null,
-            'selectedShippingAddress': null
+            'selectedShippingAddress': null,
+            'shippingAddressFromData': null
         }
     },
 
@@ -95,6 +96,29 @@ define([
             var checkoutData = getData();
 
             return checkoutData.selectedShippingAddress;
+        },
+
+        /**
+         * Set shipping address to the customer data storage
+         *
+         * @param {Object} data
+         */
+        setShippingAddressFromData: function (data) {
+            var checkoutData = getData();
+
+            checkoutData.shippingAddressFromData = data;
+            saveData(checkoutData);
+        },
+
+        /**
+         * Get shipping address from the customer data storage
+         *
+         * @return {*}
+         */
+        getShippingAddressFromData: function () {
+            var checkoutData = getData();
+
+            return checkoutData.shippingAddressFromData;
         }
     }
 });
