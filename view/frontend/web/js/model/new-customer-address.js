@@ -5,6 +5,8 @@ define([
 
     return function (addressData) {
 
+        var countryId = addressData['country_id'] || window.checkoutConfig.defaultCountryId;
+
         return {
             firstname: addressData.firstname,
             lastname: addressData.lastname,
@@ -14,7 +16,7 @@ define([
             regionCode: addressData.region['region_code'],
             region: addressData.region.region,
             postcode: addressData.postcode,
-            countryId: addressData['country_id'],
+            countryId: countryId,
             telephone: addressData.telephone,
 
             /**

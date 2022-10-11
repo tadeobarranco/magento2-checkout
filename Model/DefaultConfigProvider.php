@@ -11,7 +11,10 @@ use Magento\Customer\Model\Address\CustomerAddressDataProvider;
 use Magento\Customer\Model\Context as CustomerContext;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Directory\Model\Country\Postcode\ConfigInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Http\Context as HttpContext;
+use Magento\Store\Model\ScopeInterface;
+use Magento\Tax\Model\Config as TaxConfig;
 
 class DefaultConfigProvider implements ConfigProviderInterface
 {
@@ -46,6 +49,11 @@ class DefaultConfigProvider implements ConfigProviderInterface
     private $postcodeConfig;
 
     /**
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     */
+    private $scopeConfig;
+
+    /**
      * Class constructor
      *
      * @param \Magento\Checkout\Model\Session $checkoutSession
@@ -61,7 +69,8 @@ class DefaultConfigProvider implements ConfigProviderInterface
         CustomerRepositoryInterface $customerRepository,
         CustomerSession $customerSession,
         CustomerAddressDataProvider $customerAddressData,
-        ConfigInterface $postcodeConfig
+        ConfigInterface $postcodeConfig,
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->checkoutSession = $checkoutSession;
         $this->httpContext = $httpContext;
@@ -69,6 +78,7 @@ class DefaultConfigProvider implements ConfigProviderInterface
         $this->customerSession = $customerSession;
         $this->customerAddressData = $customerAddressData;
         $this->postcodeConfig = $postcodeConfig;
+        $this->scopeConfig = $scopeConfig;
     }
 
     /**
@@ -82,7 +92,8 @@ class DefaultConfigProvider implements ConfigProviderInterface
             'storeCode' => $this->getStoreCode(),
             'isCustomerLoggedIn' => $this->isCustomerLoggedIn(),
             'customerData' => $this->getCustomerData(),
-            'postCodes' => $this->postcodeConfig->getPostCodes()
+            'postCodes' => $this->postcodeConfig->getPostCodes(),
+            'defaultCountryId' => $this->getDefaultCountryId()
         ];
     }
 
@@ -132,5 +143,18 @@ class DefaultConfigProvider implements ConfigProviderInterface
     private function getCustomer()
     {
         return $this->customerRepository->getById($this->customerSession->getCustomerId());
+    }
+
+    /**
+     * Retrieve default country id
+     *
+     * @return string
+     */
+    private function getDefaultCountryId()
+    {
+        return $this->scopeConfig->getValue(
+            TaxConfig::CONFIG_XML_PATH_DEFAULT_COUNTRY,
+            ScopeInterface::SCOPE_STORE
+        );
     }
 }

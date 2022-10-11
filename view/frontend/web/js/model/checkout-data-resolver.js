@@ -7,6 +7,7 @@ define([
     'Barranco_Checkout/js/action/create-shipping-address',
     'Barranco_Checkout/js/action/select-shipping-address',
     'Barranco_Checkout/js/checkout-data',
+    'Barranco_Checkout/js/model/address-converter',
     'Magento_Checkout/js/model/quote',
     'Magento_Customer/js/model/address-list'
 ], function(
@@ -14,6 +15,7 @@ define([
     createShippingAddressAction,
     selectShippingAddressAction,
     checkoutData,
+    addressConverter,
     quote,
     addressList
 ) {
@@ -38,7 +40,15 @@ define([
          * Apply address to quote
          */
         applyShippingAddress: function () {
-            var shippingAddress;
+            var address,
+                shippingAddress;
+
+            if (addressList.length === 0) {
+                address = addressConverter.formAddressDataToQuoteAddress(
+                    checkoutData.getShippingAddressFromData()
+                );
+                selectShippingAddressAction(address);
+            }
 
             shippingAddress = quote.shippingAddress();
 
