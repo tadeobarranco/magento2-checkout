@@ -13,6 +13,7 @@ define([
     'Barranco_Checkout/js/model/checkout-data-resolver',
     'Barranco_Checkout/js/model/full-screen-loader',
     'Barranco_Checkout/js/model/postcode-validator',
+    'Barranco_Checkout/js/model/shipping-service',
     'Barranco_Checkout/js/model/step-navigator',
     'Magento_Checkout/js/model/quote',
     'Magento_Customer/js/model/address-list',
@@ -31,6 +32,7 @@ define([
     checkoutDataResolver,
     fullScreenLoader,
     postcodeValidator,
+    shippingService,
     stepNavigator,
     quote,
     addressList,
@@ -58,6 +60,8 @@ define([
         isFormPopUpVisible: ko.observable(false),
         saveInAddressBook: 1,
         isNewAddressAdded: ko.observable(false),
+        rates: shippingService.getShippingRates(),
+        isShippingServiceLoading: shippingService.isLoading,
 
         /**
          * @return this
