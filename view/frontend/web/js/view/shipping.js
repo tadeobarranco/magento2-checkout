@@ -20,7 +20,8 @@ define([
     'Magento_Customer/js/model/customer',
     'Magento_Ui/js/form/form',
     'Magento_Ui/js/modal/modal',
-    'mage/translate'
+    'mage/translate',
+    'Barranco_Checkout/js/model/shipping-rate-service'
 ], function (
     $,
     ko,

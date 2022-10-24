@@ -13,6 +13,7 @@ use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Directory\Model\Country\Postcode\ConfigInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Http\Context as HttpContext;
+use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Tax\Model\Config as TaxConfig;
 
@@ -54,6 +55,11 @@ class DefaultConfigProvider implements ConfigProviderInterface
     private $scopeConfig;
 
     /**
+     * @var \Magento\Quote\Api\CartRepositoryInterface
+     */
+    private $quoteRepository;
+
+    /**
      * Class constructor
      *
      * @param \Magento\Checkout\Model\Session $checkoutSession
@@ -70,7 +76,8 @@ class DefaultConfigProvider implements ConfigProviderInterface
         CustomerSession $customerSession,
         CustomerAddressDataProvider $customerAddressData,
         ConfigInterface $postcodeConfig,
-        ScopeConfigInterface $scopeConfig
+        ScopeConfigInterface $scopeConfig,
+        CartRepositoryInterface $quoteRepository
     ) {
         $this->checkoutSession = $checkoutSession;
         $this->httpContext = $httpContext;
@@ -79,6 +86,7 @@ class DefaultConfigProvider implements ConfigProviderInterface
         $this->customerAddressData = $customerAddressData;
         $this->postcodeConfig = $postcodeConfig;
         $this->scopeConfig = $scopeConfig;
+        $this->quoteRepository = $quoteRepository;
     }
 
     /**
@@ -93,7 +101,8 @@ class DefaultConfigProvider implements ConfigProviderInterface
             'isCustomerLoggedIn' => $this->isCustomerLoggedIn(),
             'customerData' => $this->getCustomerData(),
             'postCodes' => $this->postcodeConfig->getPostCodes(),
-            'defaultCountryId' => $this->getDefaultCountryId()
+            'defaultCountryId' => $this->getDefaultCountryId(),
+            'quoteData' => $this->getQuoteData()
         ];
     }
 
@@ -156,5 +165,17 @@ class DefaultConfigProvider implements ConfigProviderInterface
             TaxConfig::CONFIG_XML_PATH_DEFAULT_COUNTRY,
             ScopeInterface::SCOPE_STORE
         );
+    }
+
+    private function getQuoteData()
+    {
+        $quoteData = [];
+
+        if ($this->checkoutSession->getQuote()->getId()) {
+            $quote = $this->quoteRepository->get($this->checkoutSession->getQuote()->getId());
+            $quoteData = $quote->toArray();
+        }
+
+        return $quoteData;
     }
 }
