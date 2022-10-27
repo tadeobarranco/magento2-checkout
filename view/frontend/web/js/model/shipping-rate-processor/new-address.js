@@ -35,10 +35,12 @@ define([
 
             storage.post(
                 url, data, false
-            ).done(function () {
+            ).done(function (response) {
                 console.log('post done');
-            }).fail(function () {
+                console.log(response);
+            }).fail(function (response) {
                 console.log('post fail');
+                console.log(response);
             }).always(function () {
                 shippingService.isLoading(false);
             });
