@@ -3,6 +3,7 @@
 namespace Barranco\Checkout\Api;
 
 use Magento\Quote\Api\Data\ShippingMethodInterface;
+use Barranco\Checkout\Api\Data\AddressInterface;
 
 interface GuestShipmentEstimationInterface
 {
@@ -10,7 +11,8 @@ interface GuestShipmentEstimationInterface
      * Estimate shipping methods by address
      *
      * @param int $quoteId
+     * @param AddressInterface $address
      * @return array
      */
-    public function estimateByAddress($quoteId);
+    public function estimateByAddress($quoteId, AddressInterface $address);
 }
