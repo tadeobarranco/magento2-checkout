@@ -12,7 +12,7 @@ interface GuestShipmentEstimationInterface
      *
      * @param int $quoteId
      * @param AddressInterface $address
-     * @return array
+     * @return ShippingMethodInterface[]
      */
     public function estimateByAddress($quoteId, AddressInterface $address);
 }

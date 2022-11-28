@@ -36,11 +36,9 @@ define([
             storage.post(
                 url, data, false
             ).done(function (response) {
-                console.log('post done');
-                console.log(response);
+                shippingService.setShippingRates(response);
             }).fail(function (response) {
-                console.log('post fail');
-                console.log(response);
+                shippingService.setShippingRates([]);
             }).always(function () {
                 shippingService.isLoading(false);
             });

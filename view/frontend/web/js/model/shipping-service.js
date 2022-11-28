@@ -9,6 +9,15 @@ define([
         isLoading: ko.observable(false),
 
         /**
+         * Set shipping rates
+         *
+         * @param {*} rates
+         */
+        setShippingRates: function (rates) {
+            shippingRates(rates);
+        },
+
+        /**
          * Get shipping rates
          *
          * @return {*}
