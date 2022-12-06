@@ -16,6 +16,7 @@ use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Tax\Model\Config as TaxConfig;
+use Magento\Framework\Locale\FormatInterface;
 
 class DefaultConfigProvider implements ConfigProviderInterface
 {
@@ -60,6 +61,11 @@ class DefaultConfigProvider implements ConfigProviderInterface
     private $quoteRepository;
 
     /**
+     * @var \Magento\Framework\Locale\FormatInterface
+     */
+    private $format;
+
+    /**
      * Class constructor
      *
      * @param \Magento\Checkout\Model\Session $checkoutSession
@@ -77,7 +83,8 @@ class DefaultConfigProvider implements ConfigProviderInterface
         CustomerAddressDataProvider $customerAddressData,
         ConfigInterface $postcodeConfig,
         ScopeConfigInterface $scopeConfig,
-        CartRepositoryInterface $quoteRepository
+        CartRepositoryInterface $quoteRepository,
+        FormatInterface $format
     ) {
         $this->checkoutSession = $checkoutSession;
         $this->httpContext = $httpContext;
@@ -87,6 +94,7 @@ class DefaultConfigProvider implements ConfigProviderInterface
         $this->postcodeConfig = $postcodeConfig;
         $this->scopeConfig = $scopeConfig;
         $this->quoteRepository = $quoteRepository;
+        $this->format = $format;
     }
 
     /**
@@ -102,7 +110,9 @@ class DefaultConfigProvider implements ConfigProviderInterface
             'customerData' => $this->getCustomerData(),
             'postCodes' => $this->postcodeConfig->getPostCodes(),
             'defaultCountryId' => $this->getDefaultCountryId(),
-            'quoteData' => $this->getQuoteData()
+            'quoteData' => $this->getQuoteData(),
+            'priceFormat' => $this->getPriceFormat(),
+            'basePriceFormat' => $this->getBasePriceFormat()
         ];
     }
 
@@ -167,6 +177,11 @@ class DefaultConfigProvider implements ConfigProviderInterface
         );
     }
 
+    /**
+     * Retrieve quote data
+     *
+     * @return array
+     */
     private function getQuoteData()
     {
         $quoteData = [];
@@ -177,5 +192,31 @@ class DefaultConfigProvider implements ConfigProviderInterface
         }
 
         return $quoteData;
+    }
+
+    /**
+     * Retrieve price format
+     *
+     * @return array
+     */
+    private function getPriceFormat()
+    {
+        return $this->format->getPriceFormat(
+            null,
+            $this->checkoutSession->getQuote()->getQuoteCurrencyCode()
+        );
+    }
+
+    /**
+     * Retrieve price format
+     *
+     * @return array
+     */
+    private function getBasePriceFormat()
+    {
+        return $this->format->getPriceFormat(
+            null,
+            $this->checkoutSession->getQuote()->getBaseCurrencyCode()
+        );
     }
 }

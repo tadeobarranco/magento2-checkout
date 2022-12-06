@@ -39,6 +39,9 @@
               class="form form-shipping"
               data-bind="submit: navigateToNextStep"
               if="rates().length">
+
+            <render args="myShippingMethodListTemplate" />
+
             <div id="shipping-method-buttons-container" class="actions-toolbar">
                 <div class="primary">
                     <button data-role="opc-continue" type="submit" class="button action continue primary">

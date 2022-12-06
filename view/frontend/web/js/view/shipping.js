@@ -50,6 +50,8 @@ define([
         defaults: {
             template: 'Barranco_Checkout/shipping',
             myShippingAddressFormTemplate: 'Barranco_Checkout/shipping-address/form',
+            myShippingMethodListTemplate: 'Barranco_Checkout/shipping-address/shipping-method-list',
+            myShippingMethodItemTemplate: 'Barranco_Checkout/shipping-address/shipping-method-item',
             imports: {
                 countryOptions: '${ $.parentName }.shippingAddress.shipping-address-fieldset.country_id:indexedOptions'
             }
