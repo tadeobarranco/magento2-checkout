@@ -65,6 +65,7 @@ define([
         isNewAddressAdded: ko.observable(false),
         rates: shippingService.getShippingRates(),
         isShippingServiceLoading: shippingService.isLoading,
+        shippingMethodErrorValidationMessage: ko.observable(false),
 
         /**
          * @return this
@@ -141,6 +142,14 @@ define([
                 valid = customer.isLoggedIn(),
                 option = _.isObject(this.countryOptions) && this.countryOptions[quote.shippingAddress().countryId],
                 messageContainer = registry.get('my-checkout.errors').messageContainer;
+
+            if (!quote.shippingMethod()) {
+                this.shippingMethodErrorValidationMessage(
+                    $t('The shipping method is missing. Select the shipping method and try again.')
+                );
+
+                return false;
+            }
 
             if (!customer.isLoggedIn()) {
                 loginForm.validation();

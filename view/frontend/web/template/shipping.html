@@ -42,6 +42,11 @@
 
             <render args="myShippingMethodListTemplate" />
 
+            <div role="alert"
+                 class="message notice"
+                 if="shippingMethodErrorValidationMessage().length">
+                <span text="shippingMethodErrorValidationMessage()" />
+            </div>
             <div id="shipping-method-buttons-container" class="actions-toolbar">
                 <div class="primary">
                     <button data-role="opc-continue" type="submit" class="button action continue primary">
