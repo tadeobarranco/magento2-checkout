@@ -9,6 +9,7 @@ define([
     'underscore',
     'Barranco_Checkout/js/action/create-shipping-address',
     'Barranco_Checkout/js/action/select-shipping-address',
+    'Barranco_Checkout/js/action/select-shipping-method',
     'Barranco_Checkout/js/checkout-data',
     'Barranco_Checkout/js/model/checkout-data-resolver',
     'Barranco_Checkout/js/model/full-screen-loader',
@@ -29,6 +30,7 @@ define([
     _,
     createShippingAddressAction,
     selectShippingAddressAction,
+    selectShippingMethodAction,
     checkoutData,
     checkoutDataResolver,
     fullScreenLoader,
@@ -100,6 +102,10 @@ define([
                 if (value) {
                     self.getModalContent().openModal();
                 }
+            });
+
+            quote.shippingMethod.subscribe(function () {
+                self.shippingMethodErrorValidationMessage(false);
             });
 
             registry.async(shippingAddressFieldset + '.' + postcodeElement)(function (element) {
@@ -287,6 +293,11 @@ define([
             checkoutData.setNewCustomerShippingAddress($.extend(true, {}, addressData));
             this.isNewAddressAdded(true);
             this.getModalContent().closeModal();
+        },
+
+        selectShippingMethod: function (shippingMethod) {
+            selectShippingMethodAction(shippingMethod);
+            return true;
         }
     });
 });
