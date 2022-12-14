@@ -165,6 +165,52 @@
             }
         }
     }
+
+    .my-table-checkout-shipping-method {
+        thead {
+            th {
+                display: none;
+            }
+        }
+
+        tbody {
+            td {
+                .lib-css(border-top, @checkout-shipping-method__border);
+                .lib-css(padding-bottom, @checkout-shipping-method__padding);
+                .lib-css(padding-top, @checkout-shipping-method__padding);
+
+                &:first-child {
+                    padding-left: 0;
+                    padding-right: 0;
+                    width: 20px;
+                }
+
+                input[type='radio'] {
+                    margin: 4px 5px 0 0;
+                }
+            }
+
+            tr {
+                &:first-child {
+                    td {
+                        border-top: none;
+                    }
+                }
+            }
+
+            .col-price {
+                font-weight: @font-weight__semibold;
+            }
+
+            .row-error {
+                td {
+                    border-top: none;
+                    padding-bottom: @indent__s;
+                    padding-top: 0;
+                }
+            }
+        }
+    }
 }
 
 //
@@ -363,6 +409,10 @@
                 }
             }
         }
+    }
+
+    .my-table-checkout-shipping-method {
+        width: auto;
     }
 }
 
