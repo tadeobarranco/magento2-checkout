@@ -68,6 +68,11 @@ define([
         rates: shippingService.getShippingRates(),
         isShippingServiceLoading: shippingService.isLoading,
         shippingMethodErrorValidationMessage: ko.observable(false),
+        isShippingMethodSelected: ko.computed(function () {
+            return quote.shippingMethod() ?
+                quote.shippingMethod()['carrier_code'] + '_' + quote.shippingMethod()['method_code'] :
+                null;
+        }),
 
         /**
          * @return this
