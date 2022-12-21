@@ -3,6 +3,8 @@
  * Barranco\Checkout
  */
 -->
+
+<!-- Shipping Address Template -->
 <li id="myShipping" class="my-checkout-shipping-address" data-bind="fadeVisible: visible()">
     <div class="step-title" translate="'Shipping Address'" data-role="title" />
     <div id="checkout-step-shipping" class="step-content" data-role="content">
@@ -26,9 +28,25 @@
 
         <render if="isFormInline" args="myShippingAddressFormTemplate" />
 
+    </div>
+</li>
+
+<!-- Shipping Method Template -->
+<li data-bind="blockLoader: isShippingServiceLoading">
+    <div class="step-title" translate="'Shipping Methods'" data-role="title" />
+    <div id="checkout-step-shipping-method" class="step-content" data-role="content">
         <form id="checkout-step-shipping-information"
               class="form form-shipping"
-              data-bind="submit: navigateToNextStep">
+              data-bind="submit: navigateToNextStep"
+              if="rates().length">
+
+            <render args="myShippingMethodListTemplate" />
+
+            <div role="alert"
+                 class="message notice"
+                 if="shippingMethodErrorValidationMessage().length">
+                <span text="shippingMethodErrorValidationMessage()" />
+            </div>
             <div id="shipping-method-buttons-container" class="actions-toolbar">
                 <div class="primary">
                     <button data-role="opc-continue" type="submit" class="button action continue primary">
@@ -37,5 +55,8 @@
                 </div>
             </div>
         </form>
+        <div class="no-quotes-block"
+             ifnot="rates().length > 0"
+             translate="'Sorry, no quotes are available for this order at this time'" />
     </div>
 </li>

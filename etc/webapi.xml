@@ -1,0 +1,14 @@
+<?xml  version="1.0"?>
+<!--
+/**
+ * Barranco\Checkout
+ */
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/my-guest-carts/:quoteId/estimate-shipping-methods" method="POST">
+        <service class="Barranco\Checkout\Api\GuestShipmentEstimationInterface" method="estimateByAddress"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+</routes>

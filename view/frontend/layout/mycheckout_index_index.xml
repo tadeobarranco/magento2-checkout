@@ -113,6 +113,10 @@
                                                                     </item>
                                                                 </item>
                                                             </item>
+                                                            <item name="price" xsi:type="array">
+                                                                <item name="component" xsi:type="string">Magento_Tax/js/view/checkout/shipping_method/price</item>
+                                                                <item name="displayArea" xsi:type="string">price</item>
+                                                            </item>
                                                         </item>
                                                     </item>
                                                 </item>

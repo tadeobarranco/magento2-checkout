@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Barranco\Checkout
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Barranco\Checkout\Api\GuestShipmentEstimationInterface" type="Barranco\Checkout\Model\GuestShipmentEstimation" />
+    <preference for="Barranco\Checkout\Api\Data\AddressInterface" type="Barranco\Checkout\Model\Address" />
+</config>

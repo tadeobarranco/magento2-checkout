@@ -9,17 +9,20 @@ define([
     'underscore',
     'Barranco_Checkout/js/action/create-shipping-address',
     'Barranco_Checkout/js/action/select-shipping-address',
+    'Barranco_Checkout/js/action/select-shipping-method',
     'Barranco_Checkout/js/checkout-data',
     'Barranco_Checkout/js/model/checkout-data-resolver',
     'Barranco_Checkout/js/model/full-screen-loader',
     'Barranco_Checkout/js/model/postcode-validator',
+    'Barranco_Checkout/js/model/shipping-service',
     'Barranco_Checkout/js/model/step-navigator',
     'Magento_Checkout/js/model/quote',
     'Magento_Customer/js/model/address-list',
     'Magento_Customer/js/model/customer',
     'Magento_Ui/js/form/form',
     'Magento_Ui/js/modal/modal',
-    'mage/translate'
+    'mage/translate',
+    'Barranco_Checkout/js/model/shipping-rate-service'
 ], function (
     $,
     ko,
@@ -27,10 +30,12 @@ define([
     _,
     createShippingAddressAction,
     selectShippingAddressAction,
+    selectShippingMethodAction,
     checkoutData,
     checkoutDataResolver,
     fullScreenLoader,
     postcodeValidator,
+    shippingService,
     stepNavigator,
     quote,
     addressList,
@@ -47,6 +52,8 @@ define([
         defaults: {
             template: 'Barranco_Checkout/shipping',
             myShippingAddressFormTemplate: 'Barranco_Checkout/shipping-address/form',
+            myShippingMethodListTemplate: 'Barranco_Checkout/shipping-address/shipping-method-list',
+            myShippingMethodItemTemplate: 'Barranco_Checkout/shipping-address/shipping-method-item',
             imports: {
                 countryOptions: '${ $.parentName }.shippingAddress.shipping-address-fieldset.country_id:indexedOptions'
             }
@@ -58,6 +65,14 @@ define([
         isFormPopUpVisible: ko.observable(false),
         saveInAddressBook: 1,
         isNewAddressAdded: ko.observable(false),
+        rates: shippingService.getShippingRates(),
+        isShippingServiceLoading: shippingService.isLoading,
+        shippingMethodErrorValidationMessage: ko.observable(false),
+        isShippingMethodSelected: ko.computed(function () {
+            return quote.shippingMethod() ?
+                quote.shippingMethod()['carrier_code'] + '_' + quote.shippingMethod()['method_code'] :
+                null;
+        }),
 
         /**
          * @return this
@@ -92,6 +107,10 @@ define([
                 if (value) {
                     self.getModalContent().openModal();
                 }
+            });
+
+            quote.shippingMethod.subscribe(function () {
+                self.shippingMethodErrorValidationMessage(false);
             });
 
             registry.async(shippingAddressFieldset + '.' + postcodeElement)(function (element) {
@@ -134,6 +153,14 @@ define([
                 valid = customer.isLoggedIn(),
                 option = _.isObject(this.countryOptions) && this.countryOptions[quote.shippingAddress().countryId],
                 messageContainer = registry.get('my-checkout.errors').messageContainer;
+
+            if (!quote.shippingMethod()) {
+                this.shippingMethodErrorValidationMessage(
+                    $t('The shipping method is missing. Select the shipping method and try again.')
+                );
+
+                return false;
+            }
 
             if (!customer.isLoggedIn()) {
                 loginForm.validation();
@@ -271,6 +298,11 @@ define([
             checkoutData.setNewCustomerShippingAddress($.extend(true, {}, addressData));
             this.isNewAddressAdded(true);
             this.getModalContent().closeModal();
+        },
+
+        selectShippingMethod: function (shippingMethod) {
+            selectShippingMethodAction(shippingMethod);
+            return true;
         }
     });
 });
